@@ -1,14 +1,14 @@
 from pydub import AudioSegment
 from pydub.playback import play
 
-sound1 = AudioSegment.from_file("test.wav")
+sound1 = AudioSegment.from_file("moonlight_sonata.wav")
 sound1_channels = sound1.split_to_mono()
 sound1 = sound1_channels[0].overlay(sound1_channels[1])
-sound1 = sound1 - 30  # make sound1 quiter 30dB so that noise is clearly hearable
+# sound1 = sound1 - 30  # make sound1 quiter 30dB so that noise is clearly hearable
 
 
 import pyaudio
-MODE = "NOISE_CANCELING_OFF"
+MODE = "NOISE_CANCELING_ON"
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
