@@ -18,15 +18,23 @@ CHUNK = 1024
 audio = pyaudio.PyAudio()
 player = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, output=True, frames_per_buffer=CHUNK)
 
-MICROPHONENAME = "3- G533 Gaming Headse"
+MICROPHONENAME = "Realtek High Defini"
 MICROPHONEINDEX = -1
 
 # Check all devices
 for i in range(audio.get_device_count()):
     if audio.get_device_info_by_index(i).get('name') == "Mikrofon ("+MICROPHONENAME:
         MICROPHONEINDEX = i
-        print('microphone found:')
+        print('mikrofon gefunden:')
         print(audio.get_device_info_by_index(i))
+
+
+if MICROPHONEINDEX == -1:
+    for i in range(audio.get_device_count()):
+        if audio.get_device_info_by_index(i).get('name') == "Microphone ("+MICROPHONENAME:
+            MICROPHONEINDEX = i
+            print('microphone found:')
+            print(audio.get_device_info_by_index(i))
 
 # If device was not found list all devices
 if MICROPHONEINDEX == -1:
