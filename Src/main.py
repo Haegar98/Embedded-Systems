@@ -6,7 +6,7 @@ from pydub.playback import play
 sound1 = AudioSegment.from_file("moonlight_sonata.wav")
 sound1_channels = sound1.split_to_mono()
 sound1 = sound1_channels[0].overlay(sound1_channels[1])
-# sound1 = sound1 - 30  # make sound1 quiter 30dB so that noise is clearly hearable
+sound1 = sound1 - 30  # make sound1 quiter 30dB so that noise is clearly hearable
 
 
 MODE = "NOISE_CANCELING_ON"
@@ -24,10 +24,10 @@ player = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, output=True, fr
 player2 = audio2.open(format=FORMAT, channels=CHANNELS, rate=RATE, output=True, frames_per_buffer=CHUNK)
 
 MICROPHONENAME = "Realtek High Defini"
-MICROPHONEINDEX = -1
+MICROPHONEINDEX = 2
 
 MICROPHONENAME2 = "Realtek High Defini"
-MICROPHONEINDEX2 = -1
+MICROPHONEINDEX2 = 2
 
 def main():
     realtime.micro_selection(MICROPHONEINDEX, MICROPHONENAME, audio)
