@@ -4,7 +4,7 @@ from pydub.playback import play
 sound1 = AudioSegment.from_file("moonlight_sonata.wav")
 sound1_channels = sound1.split_to_mono()
 sound1 = sound1_channels[0].overlay(sound1_channels[1])
-sound1 = sound1 + 10  # make sound1 quiter 30dB so that noise is clearly hearable
+sound1 = sound1 + 10 # make sound1 quiter 30dB so that noise is clearly hearable
 
 
 import pyaudio
@@ -74,7 +74,7 @@ def audio_recording(AUDIO, MODE):
             sound1_part = sound1[chunk_number * mic_sound_duration:(chunk_number + 1) * mic_sound_duration]
             sound3 = mic_sound.invert_phase()
 
-            mix_sound = sound1_part.overlay(sound3).overlay(mic_sound)
+            mix_sound = sound1_part.overlay(mic_sound)
             noise_sound = sound3
             player.write(mix_sound.raw_data)
 
@@ -92,3 +92,44 @@ def audio_recording(AUDIO, MODE):
             player.write(mix_sound.raw_data)
 
             chunk_number = chunk_number + 1
+
+    elif MODE == "NOISE_CANCELING_ONLY":
+        while (True):
+            mic_data = stream.read(CHUNK)
+            mic_sound = AudioSegment(mic_data, sample_width=2, channels=1, frame_rate=RATE)
+            mic_sound_duration = len(mic_sound)
+
+            sound1_part = sound1[chunk_number * mic_sound_duration:(chunk_number + 1) * mic_sound_duration]
+            sound3 = mic_sound.invert_phase()
+
+            mix_sound = sound1_part.overlay(sound3)
+            player.write(mix_sound.raw_data)
+
+            chunk_number = chunk_number + 1
+
+    elif MODE == "ONLY_MIC":
+            while (True):
+                mic_data = stream.read(CHUNK)
+                mic_sound = AudioSegment(mic_data, sample_width=2, channels=1, frame_rate=RATE)
+                mic_sound_duration = len(mic_sound)
+
+                sound1_part = sound1[chunk_number * mic_sound_duration:(chunk_number + 1) * mic_sound_duration]
+                sound3 = mic_sound
+
+                mix_sound = sound3
+                player.write(mix_sound.raw_data)
+
+                chunk_number = chunk_number + 1
+
+    elif MODE == "ONLY_MUSIC":
+            while (True):
+                mic_data = stream.read(CHUNK)
+                mic_sound = AudioSegment(mic_data, sample_width=2, channels=1, frame_rate=RATE)
+                mic_sound_duration = len(mic_sound)
+
+                sound1_part = sound1[chunk_number * mic_sound_duration:(chunk_number + 1) * mic_sound_duration]
+
+                mix_sound = sound1_part
+                player.write(mix_sound.raw_data)
+
+                chunk_number = chunk_number + 1
